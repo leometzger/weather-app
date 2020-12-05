@@ -1,0 +1,84 @@
+<template>
+  <v-data-table
+    :headers="headers"
+    :items="cities"
+    @new-item="$emit('new-item')"
+  >
+    <template v-slot:top>
+      <list-header
+        title="Cidade"
+        new-title="Inserir cidade"
+        @new-item="$emit('new-item')"
+      ></list-header>
+    </template>
+
+    <template v-slot:item.name="{item}">
+      <strong>{{ item.name }}</strong>
+    </template>
+
+    <template v-slot:item.country="{item}">
+      <v-chip outlined color="primary" small>{{
+        getCountryById(item.country)
+      }}</v-chip>
+    </template>
+
+    <template v-slot:item.actions="{item}">
+      <v-icon small class="mr-2" @click="$emit('edit-item', item)">
+        mdi-pencil
+      </v-icon>
+      <v-icon small @click="$emit('delete-item', item)">
+        mdi-delete
+      </v-icon>
+    </template>
+
+    <template v-slot:item.createdAt="{item}">
+      <span>{{ formatDatetime(item.createdAt) }}</span>
+    </template>
+
+    <template v-slot:item.updatedAt="{item}">
+      <span>{{ formatDatetime(item.updatedAt) }}</span>
+    </template>
+  </v-data-table>
+</template>
+
+<script>
+import ListHeader from '@/components/common/ListHeader'
+
+export default {
+  components: {ListHeader},
+  props: {
+    cities: {
+      type: Array,
+      required: true,
+    },
+    countries: {
+      type: Array,
+      required: true,
+    },
+  },
+
+  data: () => ({
+    dialog: false,
+    headers: [
+      {text: 'País', value: 'country'},
+      {text: 'Nome', value: 'name'},
+      {text: 'Latitude', value: 'latitude'},
+      {text: 'Longitude', value: 'longitude'},
+      {text: 'Data de criação', value: 'createdAt'},
+      {text: 'Última atualização', value: 'updatedAt'},
+      {text: 'Ações', value: 'actions', align: 'right', sortable: false},
+    ],
+  }),
+
+  methods: {
+    formatDatetime(datetime) {
+      return datetime.toLocaleString('pt-br')
+    },
+    getCountryById(countryId) {
+      const country = this.countries.find(country => country.id === countryId)
+
+      return country ? `${country.code} - ${country.name}` : '-'
+    },
+  },
+}
+</script>

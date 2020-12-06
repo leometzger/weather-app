@@ -1,0 +1,64 @@
+
+{
+  "lat": -26.31,
+  "lon": -48.85,
+  "timezone": "America/Sao_Paulo",
+  "timezone_offset": -10800,
+  "current": {
+      "dt": 1607282673,
+      "sunrise": 1607242517,
+      "sunset": 1607291900,
+      "temp": 290.39,
+      "feels_like": 289.26,
+      "pressure": 981,
+      "humidity": 94,
+      "dew_point": 289.42,
+      "uvi": 14.33,
+      "clouds": 90,
+      "visibility": 2000,
+      "wind_speed": 4.6,
+      "wind_deg": 120,
+      "weather": [
+          {
+              "id": 500,
+              "main": "Rain",
+              "description": "light rain",
+              "icon": "10d"
+          }
+      ],
+      "rain": {
+          "1h": 0.25
+      }
+  },
+  "hourly": [
+      {
+          "dt": 1607212800,
+          "temp": 288.36,
+          "feels_like": 288.95,
+          "pressure": 985,
+          "humidity": 93,
+          "dew_point": 287.24,
+          "clouds": 75,
+          "visibility": 4000,
+          "wind_speed": 1,
+          "wind_deg": 0,
+          "weather": [
+              {
+                  "id": 500,
+                  "main": "Rain",
+                  "description": "light rain",
+                  "icon": "10n"
+              },
+              {
+                  "id": 701,
+                  "main": "Mist",
+                  "description": "mist",
+                  "icon": "50n"
+              }
+          ],
+          "rain": {
+              "1h": 0.51
+          }
+      }
+    ]
+}

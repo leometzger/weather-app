@@ -28,14 +28,12 @@ const mutations = {
 }
 
 const actions = {
-  async addCity({commit, getters, dispatch}, city) {
+  async addCity({commit, dispatch}, city) {
     commit('setIsLoading', true)
-    if (getters.citiesCount < 3) {
-      await Promise.all([
-        dispatch('getForecastsForCity', city),
-        dispatch('getPastForecastsForCity', city),
-      ])
-    }
+    await Promise.all([
+      dispatch('getForecastsForCity', city),
+      dispatch('getPastForecastsForCity', city),
+    ])
     commit('setIsLoading', false)
   },
 
@@ -59,9 +57,6 @@ const actions = {
 }
 
 const getters = {
-  citiesCount() {
-    return 0
-  },
   citiesWeatherData(state) {
     return state.citiesForecasts.map(({city, forecasts}) => {
       const {timeMachine: pastForecasts} =

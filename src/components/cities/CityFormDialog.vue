@@ -24,6 +24,7 @@
     <div class="row">
       <div class="col-12 col-md-6">
         <v-text-field
+          autofocus
           type="number"
           v-model="city.latitude"
           label="Latitude"

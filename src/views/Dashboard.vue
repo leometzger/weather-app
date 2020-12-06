@@ -58,14 +58,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@media (min-width: 1024px) {
+@media (min-width: 1023px) {
   .cities-selector {
     width: 40% !important;
     margin: 15px auto !important;
   }
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1023px) {
   .cities-selector {
     width: 80% !important;
     margin: 15px auto !important;

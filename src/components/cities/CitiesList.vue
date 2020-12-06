@@ -1,7 +1,10 @@
 <template>
   <v-data-table
+    hide-default-footer
     :headers="headers"
+    :search="search"
     :items="cities"
+    :items-per-page="Infinity"
     @new-item="$emit('new-item')"
   >
     <template v-slot:top>
@@ -10,6 +13,7 @@
         new-title="Inserir cidade"
         @new-item="$emit('new-item')"
       ></list-header>
+      <search-input class="mx-10" v-model="search" />
     </template>
 
     <template v-slot:item.name="{item}">
@@ -43,9 +47,10 @@
 
 <script>
 import ListHeader from '@/components/common/ListHeader'
+import SearchInput from '@/components/common/SearchInput'
 
 export default {
-  components: {ListHeader},
+  components: {ListHeader, SearchInput},
   props: {
     cities: {
       type: Array,
@@ -59,6 +64,7 @@ export default {
 
   data: () => ({
     dialog: false,
+    search: '',
     headers: [
       {text: 'País', value: 'country'},
       {text: 'Nome', value: 'name'},

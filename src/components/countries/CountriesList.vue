@@ -1,11 +1,18 @@
 <template>
-  <v-data-table :headers="headers" :items="countries">
+  <v-data-table
+    hide-default-footer
+    :search="search"
+    :headers="headers"
+    :items="countries"
+    :items-per-page="Infinity"
+  >
     <template v-slot:top>
       <list-header
         title="País"
         new-title="Inserir país"
         @new-item="$emit('new-item')"
       ></list-header>
+      <search-input class="mx-4" v-model="search" />
     </template>
 
     <template v-slot:item.name="{item}">
@@ -37,9 +44,10 @@
 
 <script>
 import ListHeader from '@/components/common/ListHeader'
+import SearchInput from '../common/SearchInput.vue'
 
 export default {
-  components: {ListHeader},
+  components: {ListHeader, SearchInput},
   props: {
     countries: {
       type: Array,
@@ -48,6 +56,7 @@ export default {
   },
 
   data: () => ({
+    search: '',
     dialog: false,
     headers: [
       {text: 'Nome', value: 'name'},

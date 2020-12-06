@@ -1,4 +1,4 @@
-import {difference} from '@/utils/collections'
+import {difference, intersection} from '@/utils/collections'
 
 describe('utils collections', () => {
   describe('difference', () => {
@@ -17,7 +17,7 @@ describe('utils collections', () => {
       const arr1 = [1, 2, 3, 5]
       const arr2 = [2, 5, 1]
 
-      const result = difference(arr1, arr2)
+      const result = intersection(arr1, arr2)
 
       expect(result).toEqual([1, 2, 5])
     })

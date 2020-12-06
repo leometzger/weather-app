@@ -64,11 +64,10 @@ const getters = {
   },
   citiesWeatherData(state) {
     return state.citiesForecasts.map(({city, forecasts}) => {
-      const {timeMachine: pastForecasts} = state.citiesTimeMachine.find(
-        ({city: tmCity}) => {
+      const {timeMachine: pastForecasts} =
+        state.citiesTimeMachine.find(({city: tmCity}) => {
           return city === tmCity
-        }
-      )
+        }) || {}
 
       return {
         city,

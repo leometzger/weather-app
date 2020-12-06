@@ -8,9 +8,10 @@
       prepend-icon="person"
       type="text"
       label="Usuário"
-      v-model="login.username"
+      :value="login.username"
       :error-messages="usernameErrors"
       :disabled="loading"
+      @input="changeUsername"
     ></v-text-field>
     <v-text-field
       outlined
@@ -21,7 +22,8 @@
       type="password"
       :disabled="loading"
       :error-messages="passwordErrors"
-      v-model="login.password"
+      :value="login.password"
+      @input="changePassword"
       @keyup.enter="$emit('submit', login)"
     >
     </v-text-field>
@@ -40,9 +42,13 @@
 
 <script>
 import {buildMessages} from '@/utils/vuelidate'
-import {isInvalidState} from './customValidations'
 import {required} from 'vuelidate/lib/validators'
 import {validationMixin} from 'vuelidate'
+import {authStates} from '@/store/authentication'
+
+const isValidState = (value, vm) => {
+  return vm.state !== authStates.LOGIN_ERROR
+}
 
 export default {
   mixins: [validationMixin],
@@ -57,6 +63,7 @@ export default {
     login: {
       username: '',
       password: '',
+      state: authStates.UNAUTHENTICATED,
     },
     loginError: false,
   }),
@@ -72,30 +79,43 @@ export default {
     },
 
     usernameErrors() {
-      return buildMessages(this.$v.username, {
+      return buildMessages(this.$v.login.username, {
         required: 'Campo requerido',
       })
     },
     passwordErrors() {
-      return buildMessages(this.$v.password, {
+      return buildMessages(this.$v.login.password, {
         required: 'Campo requerido',
-        isInvalidState: 'Usuário ou senha inválidos',
+        isValidState: 'Usuário ou senha inválidos',
       })
     },
   },
 
   watch: {
-    login: {
-      deep: true,
-      handler() {
-        this.$emit('change')
-      },
+    loginState(state) {
+      this.login.state = state
+      this.$v.login.password.$touch()
+    },
+  },
+
+  methods: {
+    changeUsername(value) {
+      this.login.username = value
+      this.$v.login.username.$touch()
+      this.$emit('change')
+    },
+    changePassword(value) {
+      this.login.password = value
+      this.$v.login.password.$touch()
+      this.$emit('change')
     },
   },
 
   validations: {
-    username: {required},
-    password: {required, isInvalidState},
+    login: {
+      username: {required},
+      password: {required, isValidState},
+    },
   },
 }
 </script>

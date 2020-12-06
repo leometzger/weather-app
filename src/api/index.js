@@ -9,8 +9,8 @@ import WeatherApi from './WeatherApi'
 const db = new Dexie('weather')
 
 db.version(1).stores({
-  cities: '++id,[name+country]',
-  countries: 'code,name',
+  cities: '++id,country',
+  countries: '++id,code,name',
 })
 
 const http = axios.create({

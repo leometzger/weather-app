@@ -82,7 +82,7 @@ const WeatherApi = (http, db) => ({
 
   async getCityTimemachineWeather(city) {
     try {
-      const response = await http.get('/onecall/timemachine/daily', {
+      const response = await http.get('/onecall/timemachine', {
         params: {
           dt: Math.floor(new Date().getTime() / 1000),
           lat: city.latitude,

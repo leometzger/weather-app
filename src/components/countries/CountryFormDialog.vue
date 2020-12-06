@@ -7,6 +7,7 @@
     @save="onClickSave"
   >
     <v-text-field
+      autofocus
       v-model="country.code"
       label="Código"
       :error-messages="codeErrors"
@@ -41,7 +42,7 @@ export default {
 
   computed: {
     isNew() {
-      return this.id !== ''
+      return !!this.id
     },
     codeErrors() {
       return buildMessages(this.$v.country.code, {
@@ -59,13 +60,12 @@ export default {
      * @public
      */
     open({id, name, code} = {}) {
-      this.$v.$touch()
-      this.$v.$reset()
       this.country = Country({
         id: id || '',
         name: name || '',
         code,
       })
+      this.$v.$reset()
       this.isOpened = true
     },
     /**

@@ -72,7 +72,10 @@ export default {
 
   methods: {
     formatDatetime(datetime) {
-      return datetime.toLocaleString('pt-br')
+      if (datetime && typeof datetime.toLocaleString === 'function') {
+        return datetime.toLocaleString('pt-br')
+      }
+      return datetime
     },
     getCountryById(countryId) {
       const country = this.countries.find(country => country.id === countryId)

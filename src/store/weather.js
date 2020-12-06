@@ -4,9 +4,13 @@ const state = {
   citiesForecasts: [],
   citiesTimeMachine: [],
   citiesError: {},
+  isLoading: false,
 }
 
 const mutations = {
+  setIsLoading(state, isLoading) {
+    state.isLoading = isLoading
+  },
   addCityForecast(state, {city, forecasts}) {
     state.citiesForecasts.push({city, forecasts})
   },
@@ -24,29 +28,33 @@ const mutations = {
 }
 
 const actions = {
-  async addCity({getters, dispatch}, city) {
+  async addCity({commit, getters, dispatch}, city) {
+    commit('setIsLoading', true)
     if (getters.citiesCount < 3) {
       await Promise.all([
         dispatch('getForecastsForCity', city),
         dispatch('getPastForecastsForCity', city),
       ])
     }
+    commit('setIsLoading', false)
   },
 
   async getForecastsForCity({commit}, city) {
     const result = await api.weather.getCityForecastWeather(city)
 
-    if (result.isSuccess()) {
-      commit('addCityForecast', {city, forecasts: result.payload})
-    }
+    commit('addCityForecast', {
+      city,
+      forecasts: result.isSuccess() ? result.payload : null,
+    })
   },
 
   async getPastForecastsForCity({commit}, city) {
     const result = await api.weather.getCityTimemachineWeather(city)
 
-    if (result.isSuccess()) {
-      commit('addCityTimeMachine', {city, timeMachine: result.payload})
-    }
+    commit('addCityTimeMachine', {
+      city,
+      timeMachine: result.isSuccess() ? result.payload : null,
+    })
   },
 }
 
@@ -62,7 +70,12 @@ const getters = {
         }
       )
 
-      return {city, pastForecasts, forecasts}
+      return {
+        city,
+        pastForecasts,
+        forecasts,
+        founded: !!(pastForecasts && forecasts),
+      }
     })
   },
 }

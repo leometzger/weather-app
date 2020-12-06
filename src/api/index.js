@@ -13,9 +13,18 @@ db.version(1).stores({
   countries: 'code,name',
 })
 
+const http = axios.create({
+  baseURL: 'https://community-open-weather-map.p.rapidapi.com/',
+  headers: {
+    'x-rapidapi-host': 'community-open-weather-map.p.rapidapi.com',
+    'x-rapidapi-key': process.env.VUE_APP_RAPIDAPI_KEY,
+    useQueryString: true,
+  },
+})
+
 export default {
   ...LoginApi(db),
   cities: CitiesApi(db),
   countries: CountriesApi(db),
-  weather: WeatherApi(axios),
+  weather: WeatherApi(http, db),
 }

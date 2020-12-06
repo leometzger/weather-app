@@ -7,8 +7,9 @@
       @add="addCity"
       @remove="removeCity"
     />
+    <loading-state v-if="isLoading" />
     <empty-state
-      v-if="citiesWeatherData.length === 0"
+      v-else-if="citiesWeatherData.length === 0"
       :cities="cities"
       :countries="countries"
       @add-city="addCity"
@@ -25,16 +26,18 @@
 <script>
 import CitiesSelector from '@/components/main/CitiesSelector.vue'
 import EmptyState from '@/components/main/EmptyState'
+import LoadingState from '@/components/main/LoadingState'
 import WeatherContent from '@/components/main/WeatherContent'
 import {mapActions, mapGetters, mapMutations, mapState} from 'vuex'
 
 export default {
-  components: {CitiesSelector, EmptyState, WeatherContent},
+  components: {CitiesSelector, EmptyState, WeatherContent, LoadingState},
 
   computed: {
     ...mapState('countries', ['countries']),
     ...mapState('cities', ['cities']),
     ...mapGetters('weather', ['citiesWeatherData']),
+    ...mapState('weather', ['isLoading']),
     selectedCitiesIds() {
       return this.citiesWeatherData.map(({city}) => city.id)
     },

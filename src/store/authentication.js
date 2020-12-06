@@ -21,6 +21,9 @@ const mutations = {
   logginIn(state) {
     state.loginState = authStates.LOGGIN_IN
   },
+  loginChange(state) {
+    state.loginState = authStates.UNAUTHENTICATED
+  },
 }
 
 const actions = {

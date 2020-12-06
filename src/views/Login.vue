@@ -5,6 +5,7 @@
     <login-form
       class="form"
       :login-state="loginState"
+      @change="loginChange"
       @submit="submitLogin"
     ></login-form>
   </div>
@@ -13,7 +14,7 @@
 <script>
 import LoginForm from '@/components/login/LoginForm'
 import LoginIllustration from '@/components/login/LoginIllustration'
-import {mapActions, mapGetters, mapState} from 'vuex'
+import {mapActions, mapGetters, mapMutations, mapState} from 'vuex'
 
 export default {
   components: {LoginForm, LoginIllustration},
@@ -30,6 +31,7 @@ export default {
   },
   methods: {
     ...mapActions('authentication', ['submitLogin']),
+    ...mapMutations('authentication', ['loginChange']),
   },
 }
 </script>

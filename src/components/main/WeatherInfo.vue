@@ -104,7 +104,7 @@ export default {
     },
     toDatetime(datetime) {
       if (datetime && typeof datetime.toLocaleString === 'function') {
-        return datetime.toLocaleString()
+        return datetime.toLocaleString('pt-br')
       }
       return datetime
     },

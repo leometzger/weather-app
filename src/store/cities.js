@@ -31,7 +31,7 @@ const actions = {
   },
 
   async updateCity({dispatch}, city) {
-    const response = await api.cities.updateItem(city)
+    const response = await api.cities.updateItem(city.id, city)
 
     if (response.isSuccess()) {
       dispatch(

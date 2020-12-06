@@ -1,28 +1,34 @@
 <template>
   <div class="cities-container">
+    <delete-dialog
+      ref="deleteDialog"
+      message="Tem certeza que deseja deletar a cidade?"
+      @confirm="deleteCity"
+    />
     <cities-list
       :cities="cities"
       :countries="countries"
       @new-item="onClickNew"
       @edit-item="onClickEdit"
-      @delete-item="deleteCity"
-    ></cities-list>
+      @delete-item="onClickDelete"
+    />
     <city-form
       ref="cityForm"
       :countries="countries"
       @create="onCreate"
       @update="onUpdate"
-    ></city-form>
+    />
   </div>
 </template>
 
 <script>
 import CitiesList from '@/components/cities/CitiesList'
 import CityForm from '@/components/cities/CityFormDialog.vue'
+import DeleteDialog from '@/components/common/DeleteDialog'
 import {mapActions, mapState} from 'vuex'
 
 export default {
-  components: {CitiesList, CityForm},
+  components: {CitiesList, CityForm, DeleteDialog},
 
   computed: {
     ...mapState('cities', ['cities']),
@@ -44,6 +50,9 @@ export default {
     ...mapActions('countries', ['fetchCountries']),
     onClickEdit(city) {
       this.$refs.cityForm.open(city)
+    },
+    onClickDelete(city) {
+      this.$refs.deleteDialog.open(city)
     },
     onClickNew() {
       this.$refs.cityForm.open()

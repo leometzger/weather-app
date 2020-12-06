@@ -1,6 +1,4 @@
 import {Result} from './Result'
-import forecastsData from './forecasts.json'
-import timeMachineData from './timemachine.json'
 
 export const WeatherForecast = ({
   datetime,
@@ -56,53 +54,53 @@ const buildWeatherTimeMachineResult = data => {
 
 const fromUnixTime = unix => new Date(unix * 1000)
 
-const WeatherApi = () => ({
-  async getCityForecastWeather() {
-    /*const response = await forecastApi.get({
-      url: 'forecast',
-      params: {
-        q: `${city.name},${city.code}`,
-        lat: city.lat,
-        lon: city.lon,
-      },
-    })*/
-    const response = {
-      status: 200,
-      data: forecastsData,
-    }
-
-    if (response.status === 200) {
-      return Result({
-        status: 200,
-        payload: buildWeatherForecastResult(response.data),
+const WeatherApi = (http, db) => ({
+  async getCityForecastWeather(city) {
+    try {
+      const country = await db.countries.get(city.country)
+      const response = await http.get('/forecast', {
+        params: {
+          q: `${city.name},${country.code}`,
+          lat: city.latitude,
+          lon: city.longitude,
+        },
       })
-    }
 
-    return Result({status: response.status, payload: []})
+      if (response.status === 200) {
+        return Result({
+          status: 200,
+          payload: buildWeatherForecastResult(response.data),
+        })
+      }
+      return Result({status: response.status, payload: []})
+    } catch (e) {
+      const response = e.response
+
+      return Result({status: response.status, payload: []})
+    }
   },
 
-  async getCityTimemachineWeather() {
-    /*const response = await forecastApi.get({
-      url: 'onecall/timemachine',
-      params: {
-        dt: new Date().toUTCString(),
-        lat: city.lat,
-        lon: city.lon,
-      },
-    })*/
-    const response = {
-      status: 200,
-      data: timeMachineData,
-    }
-
-    if (response.status === 200) {
-      return Result({
-        status: 200,
-        payload: buildWeatherTimeMachineResult(response.data),
+  async getCityTimemachineWeather(city) {
+    try {
+      const response = await http.get('/onecall/timemachine/daily', {
+        params: {
+          dt: Math.floor(new Date().getTime() / 1000),
+          lat: city.latitude,
+          lon: city.longitude,
+        },
       })
-    }
 
-    return Result({status: response.status, payload: []})
+      if (response.status === 200) {
+        return Result({
+          status: 200,
+          payload: buildWeatherTimeMachineResult(response.data),
+        })
+      }
+      return Result({status: response.status, payload: []})
+    } catch (e) {
+      const response = e.response
+      return Result({status: response.status, payload: []})
+    }
   },
 })
 

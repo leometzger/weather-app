@@ -1,16 +1,26 @@
 <template>
   <div class="weather-content-container">
     <template v-for="info in cityWeatherData">
-      <weather-info :key="info.city.id" :weather-info="info"></weather-info>
+      <weather-info
+        v-if="info.founded"
+        :key="info.city.id"
+        :weather-info="info"
+      ></weather-info>
+      <weather-not-founded-info
+        v-else
+        :key="info.city.id"
+        :weather-info="info"
+      />
     </template>
   </div>
 </template>
 
 <script>
 import WeatherInfo from './WeatherInfo.vue'
+import WeatherNotFoundedInfo from './WeatherNotFoundedInfo'
 
 export default {
-  components: {WeatherInfo},
+  components: {WeatherInfo, WeatherNotFoundedInfo},
 
   props: {
     cityWeatherData: {

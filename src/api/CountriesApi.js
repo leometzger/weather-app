@@ -1,11 +1,11 @@
 import CrudApi from './CrudApi'
 
 export const Country = ({
-  id,
-  name,
-  code,
-  createdAt = null,
-  updatedAt = null,
+  id = '',
+  name = '',
+  code = '',
+  createdAt,
+  updatedAt,
 } = {}) => ({
   id,
   name,
@@ -18,6 +18,12 @@ const CountriesApi = db =>
   CrudApi({
     table: db.countries,
     factory: Country,
+    beforeDelete: async id => {
+      await db.cities
+        .where('country')
+        .equals(id)
+        .delete()
+    },
   })
 
 export default CountriesApi

@@ -31,7 +31,7 @@ const actions = {
   },
 
   async updateCountry({dispatch}, country) {
-    const response = await api.countries.updateItem(country)
+    const response = await api.countries.updateItem(country.id, country)
 
     if (response.isSuccess()) {
       dispatch(

@@ -1,14 +1,12 @@
 <template>
-  <v-dialog v-model="isOpened">
+  <v-dialog v-model="isOpened" width="400px">
     <v-card>
       <v-card-title class="headline">{{ message }}</v-card-title>
+      <v-card-text v-if="submessage">{{ submessage }}</v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="blue darken-1" text @click="onClickClose">Cancel</v-btn>
-        <v-btn color="blue darken-1" text @click="onClickConfirm"
-          >Deletar</v-btn
-        >
-        <v-spacer></v-spacer>
+        <v-btn text @click="onClickClose">Cancel</v-btn>
+        <v-btn color="primary" @click="onClickConfirm">Deletar</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -30,14 +28,16 @@ export default {
 
   data: () => ({
     isOpened: false,
+    currentDelete: null,
   }),
 
   methods: {
     /**
      * @public
      */
-    open() {
+    open(item) {
       this.isOpened = true
+      this.currentDelete = item
     },
     /**
      * @public
@@ -50,7 +50,8 @@ export default {
       this.$emit('close')
     },
     onClickConfirm() {
-      this.$emit('confirm')
+      this.$emit('confirm', this.currentDelete)
+      this.isOpened = false
     },
   },
 }

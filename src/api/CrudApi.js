@@ -1,6 +1,6 @@
 import {Result} from './Result'
 
-const CrudApi = ({table, factory}) => ({
+const CrudApi = ({table, factory, beforeDelete = async () => {}}) => ({
   // GET /api/item
   getItems: async () => {
     const item = await table.toArray()
@@ -34,13 +34,15 @@ const CrudApi = ({table, factory}) => ({
 
   // PUT /api/item/:id
   updateItem: async (id, item) => {
-    const updatedItem = factory(item)
-    updatedItem.updatedAt = new Date()
-    const exists = await table.get(id)
+    const dbItem = await table.get(id)
 
-    if (!exists) {
+    if (!dbItem) {
       return Result({status: 404})
     }
+
+    const updatedItem = factory(item)
+    updatedItem.createdAt = dbItem.createdAt
+    updatedItem.updatedAt = new Date()
 
     await table.update(id, updatedItem)
 
@@ -49,6 +51,7 @@ const CrudApi = ({table, factory}) => ({
 
   // DELETE /api/item/:id
   deleteItem: async id => {
+    await beforeDelete(id)
     const item = await table.get(id)
 
     if (!item) {

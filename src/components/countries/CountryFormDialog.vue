@@ -42,7 +42,7 @@ export default {
 
   computed: {
     isNew() {
-      return !!this.id
+      return !this.country.id
     },
     codeErrors() {
       return buildMessages(this.$v.country.code, {

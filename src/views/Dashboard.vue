@@ -1,6 +1,7 @@
 <template>
   <div class="dashboard-container">
     <cities-selector
+      v-if="cities.length"
       class="cities-selector"
       :value="selectedCitiesIds"
       :cities="cities"

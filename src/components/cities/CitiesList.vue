@@ -13,7 +13,7 @@
         new-title="Inserir cidade"
         @new-item="$emit('new-item')"
       ></list-header>
-      <search-input class="mx-10" v-model="search" />
+      <search-input class="mx-4" v-model="search" />
     </template>
 
     <template v-slot:item.name="{item}">

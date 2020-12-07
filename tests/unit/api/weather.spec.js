@@ -55,10 +55,19 @@ describe('weather API', () => {
   })
 
   describe('getCityForecastWeather', () => {
-    it('should get /forecasts api', async () => {
+    it('should get /onecall/timemachine api', async () => {
       db.countries.get.mockReturnValue(Country({code: 'BR'}))
       http.get.mockImplementation(() => {
         return {status: 200, data: timeMachineData}
+      })
+      const oneForecast = WeatherForecast({
+        cloudIndex: 75,
+        datetime: new Date('2020-12-06T00:00:00.000Z'),
+        humidity: 93,
+        pressure: 985,
+        temperature: 288.36,
+        weatherType: 'Rain',
+        windSpeed: 1,
       })
       const result = await api.getCityTimemachineWeather(
         City({
@@ -72,15 +81,11 @@ describe('weather API', () => {
 
       expect(result.isSuccess()).toBe(true)
       expect(result.payload).toEqual([
-        WeatherForecast({
-          cloudIndex: 75,
-          datetime: new Date('2020-12-06T00:00:00.000Z'),
-          humidity: 93,
-          pressure: 985,
-          temperature: 288.36,
-          weatherType: 'Rain',
-          windSpeed: 1,
-        }),
+        oneForecast,
+        oneForecast,
+        oneForecast,
+        oneForecast,
+        oneForecast,
       ])
     })
 

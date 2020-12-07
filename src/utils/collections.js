@@ -13,3 +13,17 @@ export function intersection(collection1, collection2) {
     )
   })
 }
+
+export function flatArray(arr) {
+  const result = []
+
+  for (let i = 0; i < arr.length; ++i) {
+    const subarr = arr[i]
+
+    for (let j = 0; j < subarr.length; ++j) {
+      result.push(subarr[j])
+    }
+  }
+
+  return result
+}

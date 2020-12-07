@@ -1,4 +1,5 @@
 import {Result} from './Result'
+import {flatArray} from '@/utils/collections'
 
 export const WeatherForecast = ({
   datetime,
@@ -54,6 +55,12 @@ const buildWeatherTimeMachineResult = data => {
 
 const fromUnixTime = unix => new Date(unix * 1000)
 
+const unixNowMinusDay = n => {
+  const now = new Date()
+  now.setDate(now.getDate() - n)
+  return Math.floor(now.getTime() / 1000)
+}
+
 const WeatherApi = (http, db) => ({
   async getCityForecastWeather(city) {
     try {
@@ -82,21 +89,31 @@ const WeatherApi = (http, db) => ({
 
   async getCityTimemachineWeather(city) {
     try {
-      const response = await http.get('/onecall/timemachine', {
-        params: {
-          dt: Math.floor(new Date().getTime() / 1000),
-          lat: city.latitude,
-          lon: city.longitude,
-        },
+      const calls = []
+
+      for (let i = 4; i >= 0; --i) {
+        const promise = http.get('/onecall/timemachine', {
+          params: {
+            dt: unixNowMinusDay(i),
+            lat: city.latitude,
+            lon: city.longitude,
+          },
+        })
+        calls.push(promise)
+      }
+      const responses = await Promise.all(calls)
+      const weatherForecasts = responses.map(response => {
+        if (response.status === 200) {
+          return buildWeatherTimeMachineResult(response.data)
+        } else {
+          throw {response}
+        }
       })
 
-      if (response.status === 200) {
-        return Result({
-          status: 200,
-          payload: buildWeatherTimeMachineResult(response.data),
-        })
-      }
-      return Result({status: response.status, payload: []})
+      return Result({
+        status: 200,
+        payload: flatArray(weatherForecasts),
+      })
     } catch (e) {
       const response = e.response
       return Result({status: response.status, payload: []})

@@ -1,4 +1,4 @@
-import {difference, intersection} from '@/utils/collections'
+import {difference, flatArray, intersection} from '@/utils/collections'
 
 describe('utils collections', () => {
   describe('difference', () => {
@@ -20,6 +20,17 @@ describe('utils collections', () => {
       const result = intersection(arr1, arr2)
 
       expect(result).toEqual([1, 2, 5])
+    })
+  })
+
+  describe('flatArray', () => {
+    it('should flat an array of arrays', () => {
+      const arr1 = [
+        [1, 2, 3],
+        [4, 5, 6],
+      ]
+
+      expect(flatArray(arr1)).toEqual([1, 2, 3, 4, 5, 6])
     })
   })
 })

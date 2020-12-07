@@ -4,8 +4,11 @@
       <v-list-item-content>
         <v-list-item-title class="headline">
           {{ weatherInfo.city.name }}
+          <v-icon @click="$emit('remove', weatherInfo.city)">
+            close
+          </v-icon>
         </v-list-item-title>
-        <v-list-item-subtitle></v-list-item-subtitle>
+        <v-list-item-subtitle> </v-list-item-subtitle>
       </v-list-item-content>
     </v-list-item>
 

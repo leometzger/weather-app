@@ -6,6 +6,7 @@
     label="Buscar previsão"
     item-text="name"
     item-value="id"
+    :disabled="disabled"
     :items="cities"
     :value="value"
     @input="onInput"
@@ -24,6 +25,11 @@ export default {
     value: {
       type: Array,
       required: true,
+    },
+    disabled: {
+      type: Boolean,
+      required: false,
+      default: false,
     },
   },
 

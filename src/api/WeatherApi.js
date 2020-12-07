@@ -1,6 +1,10 @@
 import {Result} from './Result'
 import {flatArray} from '@/utils/collections'
 
+const daysBackEnv = +process.env.VUE_APP_N_DAYS_BACK
+const ndaysBack =
+  daysBackEnv && daysBackEnv <= 4 && daysBackEnv >= 0 ? daysBackEnv : 4
+
 export const WeatherForecast = ({
   datetime,
   temperature,
@@ -61,6 +65,8 @@ const unixNowMinusDay = n => {
   return Math.floor(now.getTime() / 1000)
 }
 
+const isMultipleOfThree = hour => hour % 3 === 0
+
 const WeatherApi = (http, db) => ({
   async getCityForecastWeather(city) {
     try {
@@ -91,7 +97,7 @@ const WeatherApi = (http, db) => ({
     try {
       const calls = []
 
-      for (let i = 4; i >= 0; --i) {
+      for (let i = ndaysBack; i >= 0; --i) {
         const promise = http.get('/onecall/timemachine', {
           params: {
             dt: unixNowMinusDay(i),
@@ -109,10 +115,13 @@ const WeatherApi = (http, db) => ({
           throw {response}
         }
       })
+      const payload = flatArray(weatherForecasts).filter(forecast =>
+        isMultipleOfThree(forecast.datetime.getHours())
+      )
 
       return Result({
         status: 200,
-        payload: flatArray(weatherForecasts),
+        payload: payload,
       })
     } catch (e) {
       const response = e.response

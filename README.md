@@ -10,7 +10,13 @@ Para rodar é necessário seguir os seguintes passsos:
 
 ```
 VUE_APP_RAPIDAPI_KEY=
+VUE_APP_N_DAYS_BACK=4
 ```
+
+Opcionalmente alterar o valor da variável `VUE_APP_N_DAYS_BACK` para
+não ter problema com limites de requisição. Essa variável é utilizada
+para configurar o número de dias que será buscado para atrás a temperatura.
+Recomendo utilizar no máximo 2 se estiver no free tier.
 
 2. Instalar as dependências:
 

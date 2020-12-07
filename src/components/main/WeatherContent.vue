@@ -5,6 +5,7 @@
         v-if="info.founded"
         :key="info.city.id"
         :weather-info="info"
+        @remove="$emit('remove', info.city)"
       ></weather-info>
       <weather-not-founded-info
         v-else

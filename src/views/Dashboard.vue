@@ -5,6 +5,7 @@
       class="cities-selector"
       :value="selectedCitiesIds"
       :cities="cities"
+      :disabled="selectedCitiesIds.length >= 3"
       @add="addCity"
       @remove="removeCity"
     />
@@ -20,6 +21,7 @@
     <weather-content
       v-else
       :city-weather-data="citiesWeatherData"
+      @remove="removeCity"
     ></weather-content>
   </div>
 </template>

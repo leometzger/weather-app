@@ -16,6 +16,7 @@ db.version(1).stores({
 const http = axios.create({
   baseURL: 'https://community-open-weather-map.p.rapidapi.com/',
   headers: {
+    'Content-Type': 'application/json; charset=utf-8',
     'x-rapidapi-host': 'community-open-weather-map.p.rapidapi.com',
     'x-rapidapi-key': process.env.VUE_APP_RAPIDAPI_KEY,
     useQueryString: true,

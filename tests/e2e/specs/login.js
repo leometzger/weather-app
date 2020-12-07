@@ -3,8 +3,8 @@
 describe('Login test', () => {
   it('should visit', () => {
     cy.visit('http://localhost:8080/login')
-    cy.get('#username').type('zoox')
-    cy.get('#password').type('zoox')
+    cy.get('#username').type('weather')
+    cy.get('#password').type('weather')
     cy.get('#login').click()
     cy.location().should(loc => {
       expect(loc.pathname).to.equal('/dashboard')

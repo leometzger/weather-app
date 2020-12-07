@@ -5,7 +5,10 @@ describe('Login API', () => {
 
   describe('login', () => {
     it('deve retornar resultado correto quando é passada as credenciais certas', async () => {
-      const response = await api.login({username: 'zoox', password: 'zoox'})
+      const response = await api.login({
+        username: 'weather',
+        password: 'weather',
+      })
 
       expect(response.isSuccess()).toBe(true)
     })

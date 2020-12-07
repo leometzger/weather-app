@@ -3,7 +3,7 @@ import {Result} from './Result'
 const LoginApi = () => ({
   async login({username, password}) {
     await new Promise(resolve => setTimeout(resolve, 1500))
-    if (username === 'zoox' && password === 'zoox') {
+    if (username === 'weather' && password === 'weather') {
       return Result({status: 200})
     }
 
